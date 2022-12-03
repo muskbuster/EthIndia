@@ -9,9 +9,13 @@ import erc20ABI from './abis/erc20.abi.json';
 import fundMeABI from './abis/fundMe.abi.json';
 import SmartAccount from "@biconomy/smart-account";
 import Navbar from './Componenets/Navbar';
+import { Routes, Route } from "react-router-dom";
+import chat from './Componenets/Utilites/noun-chat-5344379.svg'
+import DeviceId from './Componenets/DeviceId';
+import { useNavigate } from 'react-router-dom';
 
-function App() {
-
+const App = () => {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
   const [socialLogin, setSocialLogin] = useState(false);
   const [smartAccountAddress, setSmartAccountAddress] = useState("");
@@ -19,7 +23,7 @@ function App() {
   const [dappBalance, setDappBalance] = useState({ symbol: "USDT", amount: 0 });
   const tokenAddress = "0xeaBc4b91d9375796AA4F69cC764A4aB509080A58";
   const dappContractAddress = "0x682b1f3d1afa69ddfa5ff62c284894a19fd395b4";
-  
+
   //Add shardeum instead of polygon
   const activeChainId = ChainId.POLYGON_MUMBAI;
 
@@ -33,6 +37,7 @@ function App() {
     if (socialLogin.provider) {
       getTokenBalances();
       setIsLogin(true);
+      navigate('/device');
     }
     return socialLogin;
   }
@@ -88,7 +93,8 @@ function App() {
         smartAccount = accounts;
         setSmartAccountAddress(accounts)
       });
-      console.log("smart account",smartAccount[0]);
+      console.log("smart account", smartAccount[0]);
+      localStorage.setItem('user', smartAccount[0])
       const smartContractBalance = await erc20Contract.balanceOf(smartAccount[0]);
       const smartContractSymbol = await erc20Contract.symbol();
       const dappBalance = await dappContract.balanceOf(smartAccount[0], tokenAddress);
@@ -106,6 +112,7 @@ function App() {
       socialLogin.hideWallet();
       setIsLogin(false);
       setSocialLogin(null);
+      navigate('/');
     }
   }
 
@@ -126,12 +133,26 @@ function App() {
 
   return (
     <div className="App">
-      {!isLogin &&
-        <Navbar onClick={login} tag={'Login'}/>
-      }
-      {isLogin &&
-        <Navbar onClick={logout} tag={'Logout'}/>
-      }
+        {!isLogin &&
+          <Navbar onClick={login} tag={'Login'} />
+        }
+        {isLogin &&
+          <Navbar onClick={logout} tag={'Logout'} />
+        }
+        <Routes>
+          <Route path="/device" element={<DeviceId />} />
+          {/* <Route path="/LOR" element={<LOR />} />
+          <Route path="/Resume" element={<Resume />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/ContactUs" element={<ContactUs />} />
+          <Route path="/Sign" element={<Sign />} />
+          <Route path="/SopProductPage" element={<SopProductPage />} /> */}
+        </Routes>
+        <div>
+        <a href="#" class="animate-bounce rounded-full w-16 h-16 bg-gray-100 fixed bottom-0 right-0 flex items-center justify-center text-gray-800 mr-8 mb-8 shadow-lg" target="_blank">
+          <img src={chat} class="h-10 w-10 mr-2" />
+        </a>
+      </div>
     </div>
   );
 }

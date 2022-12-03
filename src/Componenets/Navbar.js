@@ -62,7 +62,7 @@ export default function Navbar(props) {
   return (
     <>
       <nav
-        class={`px-2 sm:px-4 py-2.5 bg-white fixed w-full  lg:text-xl z-20 top-0 left-0 font-GorditaRegular ${
+        class={`px-2 sm:px-4 py-2.5 bg-white fixed w-full  lg:text-xl z-20 top-0 left-0 font-GorditaRegular shadow-lg ${
           goingUp ? "" : "shadow-2xl"
         }`}
       >
