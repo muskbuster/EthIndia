@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
-import {
-  ChainId
-} from "@biconomy/core-types";
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { ChainId } from "@biconomy/core-types";
 import { ethers } from "ethers";
 import SocialLogin from "@biconomy/web3-auth";
 
-import erc20ABI from './abis/erc20.abi.json';
-import fundMeABI from './abis/fundMe.abi.json';
+import erc20ABI from "./abis/erc20.abi.json";
+import fundMeABI from "./abis/fundMe.abi.json";
 
 import SmartAccount from "@biconomy/smart-account";
 
-function App() {
+import * as PushAPI from "@pushprotocol/restapi";
+// import * as ethers from "ethers";
 
+function App() {
   const [isLogin, setIsLogin] = useState(false);
   // const [accounts, setAccounts] = useState<[] | null>(null);
   const [socialLogin, setSocialLogin] = useState(false);
@@ -21,23 +21,58 @@ function App() {
   const [dappBalance, setDappBalance] = useState({ symbol: "USDT", amount: 0 });
   const tokenAddress = "0xeaBc4b91d9375796AA4F69cC764A4aB509080A58";
   const dappContractAddress = "0x682b1f3d1afa69ddfa5ff62c284894a19fd395b4";
-  
+
+  //push protocol
+  const PK =
+    "0x82bee5195d9eb5e65cf4fb74609a5b18c32fc196969aa7f6b2152d75fa74f71c"; // channel private key
+  const Pkey = `0x82bee5195d9eb5e65cf4fb74609a5b18c32fc196969aa7f6b2152d75fa74f71c`;
+  const signer = new ethers.Wallet(Pkey);
+
   //Add shardeum instead of polygon
   const activeChainId = ChainId.POLYGON_MUMBAI;
+  
+  const polly = "hey";
+  const num = `${polly} is 5`;
+  const sendNotification = async () => {
+    try {
+      const apiResponse = await PushAPI.payloads.sendNotification({
+        signer,
+        type: 3, // target
+        identityType: 2, // direct payload
+        notification: {
+          title: num,
+          body: num,
+        },
+        payload: {
+          title: num,
+          body: `sample msg body`,
+          cta: "",
+          img: "",
+        },
+        recipients: "eip155:5:0x7e70A77d7977eCb3B00B961b801143a72f5516e4", // recipient address
+        channel: "eip155:5:0x7e70A77d7977eCb3B00B961b801143a72f5516e4", // your channel address
+        env: "staging",
+      });
 
+      // apiResponse?.status === 204, if sent successfully!
+      console.log("API repsonse: ", apiResponse);
+    } catch (err) {
+      console.error("Error: ", err);
+    }
+  };
   let initWallet = async () => {
     console.log("init wallet");
     const socialLogin = new SocialLogin();
     await socialLogin.init(ethers.utils.hexValue(activeChainId));
     socialLogin.showConnectModal();
     setSocialLogin(socialLogin);
-    console.log(socialLogin)
+    console.log(socialLogin);
     if (socialLogin.provider) {
       getTokenBalances();
       setIsLogin(true);
     }
     return socialLogin;
-  }
+  };
 
   useEffect(() => {
     initWallet();
@@ -54,20 +89,18 @@ function App() {
     let options = {
       activeNetworkId: activeChainId,
       supportedNetworksIds: [activeChainId],
-      // Network Config. 
+      // Network Config.
       // Link Paymaster / DappAPIKey for the chains you'd want to support Gasless transactions on
       networkConfig: [
         {
           chainId: activeChainId,
           dappAPIKey: "59fRCMXvk.8a1652f0-b522-4ea7-b296-98628499aee3", // Get one from Paymaster Dashboard
           // customPaymasterAPI: <IPaymaster Instance of your own Paymaster>
-        }
-      ]
-    }
+        },
+      ],
+    };
 
-    const newProvider = new ethers.providers.Web3Provider(
-      socialLogin.provider,
-    );
+    const newProvider = new ethers.providers.Web3Provider(socialLogin.provider);
 
     let smartAccount = new SmartAccount(newProvider, options);
     smartAccount = await smartAccount.init();
@@ -76,36 +109,52 @@ function App() {
 
   async function getTokenBalances() {
     if (socialLogin?.provider) {
-
       const newProvider = new ethers.providers.Web3Provider(
-        socialLogin.provider,
+        socialLogin.provider
       );
 
-      const erc20Contract = new ethers.Contract(tokenAddress, erc20ABI, newProvider);
-      const dappContract = new ethers.Contract(dappContractAddress, fundMeABI, newProvider);
+      const erc20Contract = new ethers.Contract(
+        tokenAddress,
+        erc20ABI,
+        newProvider
+      );
+      const dappContract = new ethers.Contract(
+        dappContractAddress,
+        fundMeABI,
+        newProvider
+      );
 
       let smartAccount;
       await newProvider.listAccounts().then(async (accounts) => {
-        console.log(accounts)
+        console.log(accounts);
         smartAccount = accounts;
-        setSmartAccountAddress(accounts)
+        setSmartAccountAddress(accounts);
       });
 
-      console.log("smart account",smartAccount[0]);
+      console.log("smart account", smartAccount[0]);
 
-      const smartContractBalance = await erc20Contract.balanceOf(smartAccount[0]);
+      const smartContractBalance = await erc20Contract.balanceOf(
+        smartAccount[0]
+      );
       const smartContractSymbol = await erc20Contract.symbol();
 
-
-      const dappBalance = await dappContract.balanceOf(smartAccount[0], tokenAddress);
+      const dappBalance = await dappContract.balanceOf(
+        smartAccount[0],
+        tokenAddress
+      );
 
       // console.log("dappBalance.toString()");
       // console.log(dappBalance.toString());
-      setUserBalance({ amount: smartContractBalance.toString(), symbol: smartContractSymbol });
-      setDappBalance({ amount: dappBalance.toString(), symbol: smartContractSymbol });
-
+      setUserBalance({
+        amount: smartContractBalance.toString(),
+        symbol: smartContractSymbol,
+      });
+      setDappBalance({
+        amount: dappBalance.toString(),
+        symbol: smartContractSymbol,
+      });
     } else {
-      console.log("Social login is not defined")
+      console.log("Social login is not defined");
     }
   }
 
@@ -138,17 +187,16 @@ function App() {
 
   return (
     <div className="App">
-      {!isLogin &&
-        <button onClick={login}>Login</button>
-      }
+      <button onClick={sendNotification}>hhhhhh</button>
+      {!isLogin && <button onClick={login}>Login</button>}
 
-      {isLogin &&
-        <div className='parent-container'>
+      {isLogin && (
+        <div className="parent-container">
           <div>
             <button onClick={logout}>Logout</button>
           </div>
-          <div className='column meta-info-container'>
-            <div className='row address-container'>
+          <div className="column meta-info-container">
+            <div className="row address-container">
               Smart Account: {smartAccountAddress}
             </div>
             {/* <div className='row balance-container'>
@@ -190,7 +238,7 @@ function App() {
             </div>
           </div> */}
         </div>
-      }
+      )}
     </div>
   );
 }
