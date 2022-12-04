@@ -13,6 +13,19 @@ import { Routes, Route } from "react-router-dom";
 import chat from './Componenets/Utilites/noun-chat-5344379.svg'
 import DeviceId from './Componenets/DeviceId';
 import { useNavigate } from 'react-router-dom';
+import StepHabit from './Componenets/StepHabit';
+import { fitbit } from './Componenets/api';
+import HydrateHabit from './Componenets/HydrateHabit';
+import CalorieBurnt from './Componenets/CalorieBurnt';
+import Add from './Componenets/Add';
+import Redeem from './Componenets/Redeem';
+
+
+var now = new Date();
+var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0) - now;
+if (millisTill10 < 0) {
+     millisTill10 += 60000; 
+}
 
 const App = () => {
   const navigate = useNavigate();
@@ -32,18 +45,22 @@ const App = () => {
     const socialLogin = new SocialLogin();
     await socialLogin.init(ethers.utils.hexValue(activeChainId));
     socialLogin.showConnectModal();
+    const loggedInUser = localStorage.getItem("user");
     setSocialLogin(socialLogin);
     console.log(socialLogin)
     if (socialLogin.provider) {
       getTokenBalances();
       setIsLogin(true);
-      navigate('/device');
+      if (!loggedInUser) {
+        navigate('/device');
+      }
     }
     return socialLogin;
   }
 
   useEffect(() => {
     initWallet();
+    setTimeout(fitbit, millisTill10);
   }, []);
 
   useEffect(() => {
@@ -113,6 +130,7 @@ const App = () => {
       setIsLogin(false);
       setSocialLogin(null);
       navigate('/');
+      localStorage.clear();
     }
   }
 
@@ -141,12 +159,11 @@ const App = () => {
         }
         <Routes>
           <Route path="/device" element={<DeviceId />} />
-          {/* <Route path="/LOR" element={<LOR />} />
-          <Route path="/Resume" element={<Resume />} />
-          <Route path="/About" element={<About />} />
-          <Route path="/ContactUs" element={<ContactUs />} />
-          <Route path="/Sign" element={<Sign />} />
-          <Route path="/SopProductPage" element={<SopProductPage />} /> */}
+          <Route path="/stepTracker" element={<StepHabit/>} />
+          <Route path="/HydrateTracker" element={<HydrateHabit />} />
+          <Route path="/CalorieBurnt" element={<CalorieBurnt />} />
+          <Route path="/add" element={<Add />} />
+          <Route path="/redem" element={<Redeem />} />
         </Routes>
         <div>
         <a href="#" class="animate-bounce rounded-full w-16 h-16 bg-gray-100 fixed bottom-0 right-0 flex items-center justify-center text-gray-800 mr-8 mb-8 shadow-lg" target="_blank">

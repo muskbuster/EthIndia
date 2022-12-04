@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Outlet,  } from "react-router-dom";
+import { Link, Outlet,  } from "react-router-dom";
 
 
 export default function Navbar(props) {
@@ -31,7 +31,7 @@ export default function Navbar(props) {
   function Items({ ItemName, path }) {
     return (
       <li>
-        <a
+        <Link
           to={path}
           class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-[#fa9324] group md:p-0"
           aria-current="page"
@@ -39,20 +39,20 @@ export default function Navbar(props) {
         >
           {ItemName}
           <span className="sm:hidden md:hidden lg:block w-full h-1 transition-transform  scale-x-0 rounded-full transform group-hover:scale-x-100 bg-[#fa9324]"></span>
-        </a>
+        </Link>
       </li>
     );
   }
 
-  function FlyerCard({ FlyerName,a }) {
+  function FlyerCard({ FlyerName, link }) {
     return (
         
-        <a to={a} className="p-4 flex items-start rounded-lg hover:bg-gray-50" onClick={() => {setsideMenu(!sideMenu);}}>
-            <p className="text-base font-medium text-gray-900">
+        <Link to={link} className="p-4 flex items-start rounded-lg hover:bg-[#fa9324] group" onClick={() => {setsideMenu(!sideMenu);}}>
+            <p className="text-base font-medium text-gray-900 group-hover:text-white">
              {FlyerName}
             </p>
           
-        </a>
+        </Link>
    
     );
   }
@@ -62,8 +62,7 @@ export default function Navbar(props) {
   return (
     <>
       <nav
-        class={`px-2 sm:px-4 py-2.5 bg-white fixed w-full  lg:text-xl z-20 top-0 left-0 font-GorditaRegular shadow-lg ${
-          goingUp ? "" : "shadow-2xl"
+        class={`px-2 sm:px-4 py-2.5 bg-white fixed w-full  lg:text-xl z-20 top-0 left-0 font-GorditaRegular shadow-lg ${goingUp ? "" : "shadow-2xl"
         }`}
       >
         <div class="container flex flex-wrap justify-between items-center mx-auto">
@@ -105,8 +104,15 @@ export default function Navbar(props) {
 
           <div class={` ${sideMenu ? "hidden" : ""} lg:block justify-between items-center w-full md:flex md:w-auto md:order-1 `}>
             <ul class="flex flex-col p-4 mt-4  md:flex-row md:space-x-8 md:mt-0 md:border-0 lg:text-xl " >
-            
-              <Items ItemName="TryFit" path="/"/>
+              <li>
+        <a
+          to={'/'}
+          class="block py-2 pr-4 pl-3 rounded hover:bg-gray-100 md:hover:bg-transparent text-[#fa9324] group md:p-0 font-medium "
+        >
+          TryFit
+          <span className="sm:hidden md:hidden lg:block w-full h-1 transition-transform  scale-x-0 rounded-full transform group-hover:scale-x-100 bg-[#fa9324]"></span>
+        </a>
+      </li>
 
               {/* ------------drop menu------------------- */}
               <li>
@@ -116,7 +122,7 @@ export default function Navbar(props) {
                     className="group rounded-md text-gray-700 inline-flex items-center  hover:text-gray-900  pb-8'"
                     onClick={() => (setFlyer(!flyer))}
                   >
-                    <span>Habits<span className="sm:hidden md:hidden lg:block w-full h-1 transition-transform  scale-x-0 rounded-full transform group-hover:scale-x-100 bg-[#fa9324]"></span></span>
+                    <span className="hover:text-[#fa9324]">Habits<span className="sm:hidden md:hidden lg:block w-full h-1 transition-transform  scale-x-0 rounded-full transform group-hover:scale-x-100 bg-[#fa9324]"></span></span>
 
                     <svg className={
                         flyer === true
@@ -146,18 +152,16 @@ export default function Navbar(props) {
                   >
                     <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                     <div className="relative grid gap-6 bg-white sm:gap-8 sm:p-8">
-                        <FlyerCard FlyerName="Steps" a="/SOP"/>
-                        <FlyerCard FlyerName="Lor" a="/LOR"/>
-                        <FlyerCard FlyerName="Emails"a="/SOP"/>
-                        <FlyerCard FlyerName="Resume" a="/Resume"/>
+                        <FlyerCard FlyerName="Steps" link="/stepTracker"/>
+                        <FlyerCard FlyerName="Hydration" link="/HydrateTracker"/>
+                        <FlyerCard FlyerName="Calorie"link="/CalorieBurnt"/>
+                        <FlyerCard FlyerName="Add Your Habit" link="/add"/>
                       </div>
                     </div>
                   </div>
                 </div>
               </li>
-
-              <Items ItemName="ContactUs" path="/ContactUs"/>
-
+              <Items ItemName="Reedem" path="/redem"/>
               <li>
                 <a
                   to="/Sign"
