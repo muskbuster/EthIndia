@@ -27,3 +27,6 @@ We use Covalent to get the current balance of the user.
 - Valist
 - Push protocol
 - Shardeum (deployed contract address - 0x10b08a41fa88c15199d688e370cac1e4231a1b3f)
+
+## Deployed Link
+https://youtu.be/_BI3gP0PEJw
