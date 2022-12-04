@@ -23,11 +23,12 @@ function Home(props) {
             </div>
             <section class="text-gray-700 border-t border-gray-200 mt-[80px]">
             <div class="container px-5 py-12 mx-auto mt-">
-                <div class="lg:grid lg:grid-cols-4 text-xl font-bold mt-7 lg:2 grid grid-cols-2 gap-x-32 gap-y-3 lg:px-20 ">
+                <div class="lg:grid lg:grid-cols-5 text-xl font-bold mt-7 lg:2 grid grid-cols-2 gap-x-32 gap-y-3 lg:px-20 ">
                     <div>Valist</div>
                     <div>Shardeum</div>
                     <div>Covalant</div>
                     <div>Push Protocol</div>
+                    <div>Biconomy</div>
                 </div>
             </div>
           </section>

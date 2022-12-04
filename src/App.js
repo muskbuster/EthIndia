@@ -94,6 +94,8 @@ const App = () => {
     console.log(smartAccount);
   }
 
+
+
   async function getTokenBalances() {
     if (socialLogin?.provider) {
 
@@ -133,8 +135,6 @@ const App = () => {
       localStorage.clear();
     }
   }
-
-
 
   async function login() {
     try {
