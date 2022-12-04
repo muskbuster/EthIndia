@@ -29,6 +29,6 @@ We use Covalent to get the current balance of the user.
 - Shardeum (deployed contract address - 0x10b08a41fa88c15199d688e370cac1e4231a1b3f)
 
 ## Deployed Link
-<iframe width="560" height="315" src="https://www.youtube.com/embed/_BI3gP0PEJw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 https://youtu.be/_BI3gP0PEJw
