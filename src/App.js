@@ -81,6 +81,7 @@ function App() {
   //push protocol
   const polly = "hey";
   const num = `${polly} is 5`;
+  
   const sendNotification = async () => {
     try {
       const apiResponse = await PushAPI.payloads.sendNotification({
