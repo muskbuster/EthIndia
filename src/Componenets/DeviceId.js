@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function DeviceId() {
   const [buttonText, setButtonText] = useState('Verify Me');
   const [accesstoken, setAccesstoken] = useState(false);
-
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setAccesstoken(e.target.value)
@@ -18,6 +19,7 @@ function DeviceId() {
       .then(res => {
         localStorage.setItem('accessToken', accesstoken);
         setButtonText("Verified");
+        navigate('/stepTracker')
       }) 
       .catch(err => {
         console.log(err);

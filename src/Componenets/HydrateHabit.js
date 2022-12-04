@@ -96,11 +96,11 @@ function HydrateHabit() {
         </div>
         <div className="w-[400px] h-[344px] bg-white rounded-[4px] drop-shadow-[0px_6px_18px_#E7E3EE] overflow-hidden ">
             <div className="flex justify-between items-center mt-[16px] ml-[30px] mr-[20px]">
-                <h5 className="text-[14px] font-CardFontBold leading-none text-[#192A3E] font-medium">Offers Purchased</h5>
+                <h5 className="text-[14px] font-CardFontBold leading-none text-[#192A3E] font-medium">Progress so Far</h5>
             </div>
             <div className="w-full mt-[20px] h-0.5 bg-[#EBEFF2] p-0 m-0" />
             <div className="flow-root cursor-pointer pt-[120px] w-[300px] ml-[145px] font-bold text-[60px] ">
-                50
+                1.23 L
             </div>
         </div>
         </div>

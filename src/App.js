@@ -14,17 +14,18 @@ import chat from './Componenets/Utilites/noun-chat-5344379.svg'
 import DeviceId from './Componenets/DeviceId';
 import { useNavigate } from 'react-router-dom';
 import StepHabit from './Componenets/StepHabit';
-import { fitbit } from './Componenets/api';
+import { fitbitSteps } from './Componenets/api';
 import HydrateHabit from './Componenets/HydrateHabit';
 import CalorieBurnt from './Componenets/CalorieBurnt';
 import Add from './Componenets/Add';
 import Redeem from './Componenets/Redeem';
-
+import Home from './Componenets/Home';
+import minter from './Componenets/Minter';
 
 var now = new Date();
-var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0) - now;
+var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0) - now;
 if (millisTill10 < 0) {
-     millisTill10 += 60000; 
+     millisTill10 += 86400000;
 }
 
 const App = () => {
@@ -60,7 +61,6 @@ const App = () => {
 
   useEffect(() => {
     initWallet();
-    setTimeout(fitbit, millisTill10);
   }, []);
 
   useEffect(() => {
@@ -135,6 +135,7 @@ const App = () => {
   }
 
 
+
   async function login() {
     try {
       if (socialLogin) {
@@ -143,6 +144,8 @@ const App = () => {
         let socialLogin = await initWallet();
         socialLogin.showWallet();
         console.log("Social login is not defined");
+        setTimeout(fitbitSteps, millisTill10);
+        minter();
       }
     } catch (error) {
       console.log(error);
@@ -150,7 +153,7 @@ const App = () => {
   }
 
   return (
-    <div className="App">
+    <div>
         {!isLogin &&
           <Navbar onClick={login} tag={'Login'} />
         }
@@ -158,6 +161,7 @@ const App = () => {
           <Navbar onClick={logout} tag={'Logout'} />
         }
         <Routes>
+        <Route path="/" element={<Home log={login}/>} />
           <Route path="/device" element={<DeviceId />} />
           <Route path="/stepTracker" element={<StepHabit/>} />
           <Route path="/HydrateTracker" element={<HydrateHabit />} />
