@@ -30,7 +30,55 @@ function App() {
 
   //Add shardeum instead of polygon
   const activeChainId = ChainId.POLYGON_MUMBAI;
-  
+
+  //covalent
+  const APIKEY = "ckey_65549b1692094628ad569b49e88";
+  // const baseURL = "https://api.covalenthq.com/v1";
+  // const blockchainId = "8080";
+  // const demoAddress = "0x8B0550c6040Fe5c2653F3c5ED79E51c4EC42a8D3";
+
+  // async function getWalletBalance(chainId, address) {
+  //   const url = new URL(
+  //     `${baseURL}/${chainId}/address/${address}/balances_v2/?key=${APIKEY}`
+  //   );
+  //   // const response = await fetch(url);
+  //   // const result = await response.json();
+  //   // const data = result.data;
+  //   // console.log(data);
+  //   // return data;
+
+  //   fetch(url).then((resp)=> resp.json()).then(function(data){
+  //     const res= data.data;
+  //     console.log(res);
+  //     return res;
+  //   })
+  // }
+  function getData() {
+    const address = "0x8B0550c6040Fe5c2653F3c5ED79E51c4EC42a8D3"; // example
+    const chainId = "8080"; // Moonbase Alpha TestNet chain ID
+    const url = new URL(
+      `https://api.covalenthq.com/v1/${chainId}/address/${address}/balances_v2/`
+    );
+
+    url.search = new URLSearchParams({
+      key: APIKEY,
+    });
+
+    // use fetch API to get Covalent data
+    fetch(url)
+      .then((resp) => resp.json())
+      .then(function (data) {
+        const result = data.data;
+
+        console.log(result);
+        return result;
+      });
+  }
+  useEffect(() => {
+    // Example address request
+    console.log("balances ", getData());
+  });
+  //push protocol
   const polly = "hey";
   const num = `${polly} is 5`;
   const sendNotification = async () => {
